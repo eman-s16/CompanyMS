@@ -1,0 +1,144 @@
+<app-nav></app-nav>
+
+
+<div class="templateux-section pb-0 " style="margin-top: 110px;">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-12">
+        <h2>The S/w Development List</h2>
+      </div>
+    </div>
+
+    <div>
+      <p-tabView>
+        <p-tabPanel header="OnGoing">
+          <div class="tab-pane fade active show" id="Project-OnGoing" role="tabpanel">
+            <div class="header-action d-md-flex justify-content-end mb-4">
+              <div class=" me-2 ">
+                <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm"
+                  (input)="filterProjects()">
+              </div>
+              <button type="button" class="btn btn-primary" (click)="openDialog()">
+                <i class="fe fe-plus mr-2"></i>Add New Software Development
+              </button>
+            </div>
+            <div class="row">
+              <div class="col-lg-4 col-md-12" *ngFor="let project of filteredProjects">
+                <div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">{{ project.title }}</h3>
+                  </div>
+                  <div class="card-body">
+                    <span class="tag tag-blue mb-3">{{ project.category }}</span>
+                    <p>{{ project.description }}</p>
+                    <div class="row">
+                      <div class="col-5 py-1"><strong>Created:</strong></div>
+                      <div class="col-7 py-1">{{ project.createdDate }}</div>
+                      <div class="col-5 py-1"><strong>Creator:</strong></div>
+                      <div class="col-7 py-1">{{ project.creator }}</div>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div><strong>{{ project.progress }}%</strong></div>
+                      <div><small class="text-muted">Progress</small></div>
+                    </div>
+                    <div class="progress progress-xs">
+                      <div class="progress-bar bg-danger" role="progressbar" [style.width.%]="project.progress"
+                        [attr.aria-valuenow]="project.progress" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        </p-tabPanel>
+        <p-tabPanel header="UpComing">
+
+          <div class="tab-pane" id="Project-UpComing" role="tabpanel">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-striped table-vcenter mb-0">
+                    <thead>
+                      <tr>
+                        <th>Owner</th>
+                        <th>Milestone</th>
+                        <th class="w100">Work</th>
+                        <th class="w100">Duration</th>
+                        <th>Priority</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of tableData">
+                        <td>
+                          <span>{{ row.owner }}</span>
+                        </td>
+                        <td>{{ row.milestone }}</td>
+                        <td><span>{{ row.work }}</span></td>
+                        <td>{{ row.duration }}</td>
+                        <td>
+                          <span *ngIf="row.priority === 'High'" class="text-danger">{{ row.priority }}</span>
+                          <span *ngIf="row.priority === 'Medium'" class="text-warning">{{ row.priority }}</span>
+                          <span *ngIf="row.priority === 'None'">{{ row.priority }}</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </p-tabPanel>
+
+
+      </p-tabView>
+    </div>
+
+
+  </div>
+</div>
+
+<p-dialog header="Add Project" [(visible)]="showDialog" [modal]="true" [responsive]="true" [baseZIndex]="10000"
+  [style]="{ width: '40vw' }">
+  <form [formGroup]="projectForm" (ngSubmit)="saveProject()">
+    <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" pInputText formControlName="title" class="form-control" required />
+    </div>
+    <div class="form-group">
+      <label for="category">Category:</label>
+      <input type="text" id="category" name="category" pInputText formControlName="category" class="form-control"
+        required />
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" pInputTextarea formControlName="description" rows="5"
+        class="form-control" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="createdDate">Created Date:</label>
+      <input type="date" id="createdDate" name="createdDate" pInputText formControlName="createdDate"
+        class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="creator">Creator:</label>
+      <input type="text" id="creator" name="creator" pInputText formControlName="creator" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="progress">Progress:</label>
+      <input type="number" id="progress" name="progress" pInputText formControlName="progress" class="form-control" />
+    </div>
+
+    <div class="container text-center mt-2">
+      <button type="button" (click)="closeDialog()" pButton label="Cancel" class="btn-secondary"
+        style="margin-right: 8px;"></button>
+      <button type="submit" pButton label="Save" class="btn-primary"></button>
+    </div>
+  </form>
+</p-dialog>

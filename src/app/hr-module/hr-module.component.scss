@@ -1,0 +1,38 @@
+.templateux-section {
+  padding-bottom: 0;
+
+  .staff {
+    background-size: cover;
+    background-position: center;
+    min-height: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+   
+
+
+
+    .desc {
+      color: #333;
+      text-decoration: none;
+
+      h3 {
+        font-size: 20px;
+        margin-top: 0;
+      }
+
+      span {
+        display: block;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .parag {
+        p {
+          font-size: 14px;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}

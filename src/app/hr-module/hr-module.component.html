@@ -1,0 +1,101 @@
+<app-nav></app-nav>
+
+
+<div class="templateux-section pb-0 " style="margin-top: 110px;">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-12">
+        <h2>The Employees List</h2>
+      </div>
+    </div>
+
+
+
+    <div class="d-flex mb-3 justify-content-between align-items-center">
+      <div>
+        <button pButton pRipple (click)="createNewEmployee()" class="mb-3">Create New Employee</button>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <button pButton pRipple (click)="toggleSortDirection()" class="btn btn-primary me-3">
+          {{ sortDirection === 'asc' ? 'Sort Ascending' : 'Sort Descending' }}
+        </button>
+        <div>
+
+          <span class="p-float-label">
+            <input pInputText id="filter" [(ngModel)]="filterText" class="form-control" />
+            <label htmlFor="username">Filter by Name</label>
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <div class="row ">
+      <div class="col-6 col-sm-6 col-md-6 col-lg-4 position-relative"
+        *ngFor="let employee of filteredAndSortedEmployees">
+        <div class="staff" style="height: 400px;"
+          [ngStyle]="{
+        'background-image': employee.gender === 'Female' ? 'url(./assets/images/person_2.jpg)' : 'url(./assets/images/person_1.jpg)'}">
+          <div class="bg-white p-2 m-5 position-absolute" style="bottom: 0; left: 0; width: 340px;">
+            <h3>{{employee.name}}</h3>
+            <span>{{employee.position}}</span>
+            <div class="parag">
+              <p>{{employee.description}}</p>
+              <div class="w-100"> <button pButton pRipple class="btn w-100 btn-success text-center"
+                  (click)="editEmployee(employee)">Edit</button></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<p-dialog header="{{ editMode ? 'Edit Employee' : 'Create Employee' }}" [(visible)]="showDialog" [modal]="true"
+  [responsive]="true" [baseZIndex]="10000" [style]="{ width: '40vw' }">
+
+
+  <form [formGroup]="employeeForm" (ngSubmit)="saveEmployee()">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" pInputText formControlName="name" [(ngModel)]="selectedEmployee.name"
+        class="form-control" required />
+      <p-message *ngIf="showValidationMessage && employeeForm.get('name')!.hasError('required')" severity="error"
+        text="Name is required"></p-message>
+    </div>
+    <div class="form-group">
+      <label for="position">Position:</label>
+      <input type="text" id="position" name="position" pInputText formControlName="position"
+        [(ngModel)]="selectedEmployee.position" class="form-control" required />
+      <p-message *ngIf="showValidationMessage && employeeForm.get('position')!.hasError('required')" severity="error"
+        text="Position is required"></p-message>
+    </div>
+    <div class="form-group">
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender" pInputSelect formControlName="gender" [(ngModel)]="selectedEmployee.gender"
+        class="form-control" required>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+      <p-message *ngIf="showValidationMessage && employeeForm.get('gender')!.hasError('required')" severity="error"
+        text="Gender is required"></p-message>
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" pInputTextarea [(ngModel)]="selectedEmployee.description"
+        formControlName="description" rows="5" class="form-control" required></textarea>
+      <p-message *ngIf="showValidationMessage && employeeForm.get('description')!.hasError('required')" severity="error"
+        text="Description is required"></p-message>
+    </div>
+    <div class="container text-center mt-2">
+      <button type="button" (click)="closeDialog()" pButton label="Cancel" class="btn-secondary"
+        style="margin-right: 8px;"></button>
+      <button type="submit" pButton label="{{ editMode ? 'Save' : 'Create' }}" class="btn-primary"></button>
+    </div>
+  </form>
+
+</p-dialog>
